@@ -2,19 +2,25 @@ require 'httparty'
 require 'json'
 require 'pry'
 require './lib/film'
+require './lib/person'
+require './lib/film_search'
+require './lib/ghibli_service'
 
-response = HTTParty.get("https://ghibliapi.herokuapp.com/films")
+search = FilmSearch.new
 
-parsed = JSON.parse(response.body, symbolize_names: true)
+# search.film_information.each do |film|
+#   puts film.title
+#   puts "Directed By: #{film.director}"
+#   puts "Produced By: #{film.producer}"
+#   puts "Rotten Tomatoes Score: #{film.rotten_tomatoes}"
+#   puts ""
+# end
 
-films = parsed.map do |data|
-  Film.new(data)
-end
-
-films.each do |film|
-  puts film.title
-  puts "Directed By: #{film.director}"
-  puts "Produced By: #{film.producer}"
-  puts "Rotten Tomatoes Score: #{film.rotten_tomatoes}"
+search.persons.each do |person|
+  puts "Name: #{person.name}"
+  puts "Age: #{person.age}"
+  person.films.each do |film|
+    puts film.title
+  end
   puts ""
 end
